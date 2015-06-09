@@ -14,20 +14,14 @@ MODULE = ALPM	PACKAGE = ALPM
 
 PROTOTYPES: DISABLE
 
-# ALPM::PackageFree is a subclass of ALPM::Package.
 # ALPM::DB::Sync and ALPM::DB::Local are each subclasses of ALPM::DB.
 BOOT:
-	av_push(get_av("ALPM::PackageFree::ISA", GV_ADD), newSVpv("ALPM::Package", 0));
+	av_push(get_av("ALPM::Package::File::ISA", GV_ADD), newSVpv("ALPM::Package", 0));
+	av_push(get_av("ALPM::Package::DB::ISA", GV_ADD), newSVpv("ALPM::Package", 0));
+	av_push(get_av("ALPM::Package::DB::Local::ISA", GV_ADD), newSVpv("ALPM::Package::DB", 0));
+	av_push(get_av("ALPM::Package::DB::Sync::ISA", GV_ADD), newSVpv("ALPM::Package::DB", 0));
 	av_push(get_av("ALPM::DB::Sync::ISA", GV_ADD), newSVpv("ALPM::DB", 0));
 	av_push(get_av("ALPM::DB::Local::ISA", GV_ADD), newSVpv("ALPM::DB", 0));
-
-MODULE = ALPM	PACKAGE = ALPM::PackageFree
-
-void
-DESTROY(self)
-	ALPM_PackageFree self;
- PPCODE:
-	alpm_pkg_free(self);
 
 #---------------------
 # PUBLIC ALPM METHODS
@@ -190,11 +184,7 @@ unregister_all(self)
  OUTPUT:
 	RETVAL
 
-# Packages created with load_pkgfile must be freed by the caller.
-# Hence we use ALPM_PackageFree. NULL pointers are converted
-# into undef by the typemap.
-
-ALPM_PackageFree
+ALPM_Package
 load_pkgfile(self, filename, full, siglevel)
 	ALPM_Handle self
 	const char *filename

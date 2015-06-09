@@ -127,3 +127,11 @@ alpm_pkg_get_origin(pkg)
 ALPM_Validity
 alpm_pkg_get_validation(pkg)
 	ALPM_Package pkg
+
+MODULE = ALPM	PACKAGE = ALPM::Package::File
+
+void
+DESTROY(self)
+	ALPM_Package self;
+ PPCODE:
+	alpm_pkg_free(self);

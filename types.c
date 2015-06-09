@@ -35,7 +35,16 @@ SV*
 c2p_pkg(void *p)
 {
 	SV *rv = newSV(0);
-	return sv_setref_pv(rv, "ALPM::Package", p);
+	switch(alpm_pkg_get_origin(p)) {
+		case ALPM_PKG_FROM_FILE:
+			return sv_setref_pv(rv, "ALPM::Package::File", p);
+		case ALPM_PKG_FROM_LOCALDB:
+			return sv_setref_pv(rv, "ALPM::Package::DB::Local", p);
+		case ALPM_PKG_FROM_SYNCDB:
+			return sv_setref_pv(rv, "ALPM::Package::DB::Sync", p);
+		default:
+			return sv_setref_pv(rv, "ALPM::Package", p);
+	}
 }
 
 ALPM_Package

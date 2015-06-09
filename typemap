@@ -11,7 +11,8 @@ ALPM_DB			T_ALPM_DB
 ALPM_LocalDB		T_ALPM_LOCALDB
 ALPM_SyncDB		T_ALPM_SYNCDB
 ALPM_Package		T_ALPM_PACKAGE
-ALPM_PackageFree	T_ALPM_PACKAGEFREE
+ALPM_Package_DB		T_ALPM_OBJ
+ALPM_Package_File	T_ALPM_OBJ
 ALPM_FileList		T_ALPM_FILELIST
 ALPM_SigLevel		T_SIGLEVEL
 ALPM_Origin		T_ORIGIN
@@ -30,6 +31,14 @@ off_t			T_INT
 #--------------------
 
 INPUT
+
+T_ALPM_OBJ
+	if (sv_derived_from($arg, \"${(my $ntt=$ntype)=~s/_/::/g;\$ntt}\")){
+		$var = INT2PTR($type, SvIV((SV*)SvRV($arg)));
+	}
+	else {
+		croak(\"$var is not of type ${(my $ntt=$ntype)=~s/_/::/g;\$ntt}\");
+	}
 
 T_ALPM_HANDLE
 	if(sv_derived_from($arg, \"ALPM\")){
@@ -69,14 +78,6 @@ T_ALPM_PACKAGE
 		croak(\"error: expected an ALPM::Package object\");
 	}
 
-T_ALPM_PACKAGEFREE
-	if(sv_derived_from($arg, \"ALPM::PackageFree\")){
-		IV tmp = SvIV((SV*)SvRV($arg));
-		$var = INT2PTR($type,tmp);
-	}else{
-		croak(\"error: expected an ALPM::PackageFree object\");
-	}
-
 T_SIGLEVEL
 	$var = p2c_siglevel($arg);
 
@@ -88,6 +89,9 @@ T_PKGREASON
 #---------------------
 
 OUTPUT
+
+T_ALPM_OBJ
+	sv_setref_pv($arg, \"${(my $ntt=$ntype)=~s/_/::/g;\$ntt}\", (void*)$var);
 
 # The handle should never be NULL. This is the only error condition
 # but hopefully doesn't affect us. However, the string is sometimes NULL
@@ -147,15 +151,8 @@ T_ALPM_SYNCDB
 T_ALPM_PACKAGE
 	if($var == NULL){
 		$arg = &PL_sv_undef;
-	}else{
+	} else {
 		$arg = c2p_pkg($var);
-	}
-
-T_ALPM_PACKAGEFREE
-	if($var == NULL){
-		$arg = &PL_sv_undef;
-	}else{
-		sv_setref_pv($arg, \"ALPM::PackageFree\", (void *)$var);
 	}
 
 T_ALPM_FILELIST
