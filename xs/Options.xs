@@ -60,6 +60,13 @@ alpm_option_set_totaldlcb(self, cb)
  CODE:
 	DEFSETCB(totaldl, self, cb)
 
+void
+alpm_option_set_eventcb(self, cb)
+	ALPM_Handle self
+	SV * cb
+ CODE:
+	DEFSETCB(event, self, cb)
+
 ## REGULAR OPTIONS
 
 StringOption
