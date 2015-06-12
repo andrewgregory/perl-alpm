@@ -2,6 +2,8 @@ package ALPM;
 use warnings;
 use strict;
 
+use ALPM::Exception;
+
 our $VERSION;
 BEGIN {
 	$VERSION = '3.05';
