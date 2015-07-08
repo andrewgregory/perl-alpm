@@ -19,7 +19,7 @@ typedef alpm_siglevel_t ALPM_SigLevel;
 typedef alpm_pkgfrom_t ALPM_Origin;
 typedef alpm_pkgvalidation_t ALPM_Validity;
 
-typedef alpm_depend_t * DependHash;
+typedef alpm_depend_t * ALPM_Depend;
 typedef alpm_conflict_t * ConflictArray;
 
 typedef alpm_list_t * StringListFree;
@@ -48,7 +48,9 @@ SV* c2p_db(void*);
 SV* c2p_localdb(void*);
 SV* c2p_syncdb(void*);
 SV* c2p_depmod(alpm_depmod_t);
+alpm_depmod_t p2c_depmod(SV*);
 SV* c2p_depend(void *);
+alpm_depend_t* p2c_depend(SV*);
 SV* c2p_conflict(void *);
 SV* c2p_filelist(void *);
 

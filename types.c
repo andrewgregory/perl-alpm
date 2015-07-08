@@ -81,6 +81,7 @@ c2p_depmod(alpm_depmod_t mod)
 {
 	char *cmp;
 	switch(mod){
+	case 0:
 	case ALPM_DEP_MOD_ANY: cmp = ""; break; /* ? */
 	case ALPM_DEP_MOD_EQ: cmp = "="; break;
 	case ALPM_DEP_MOD_GE: cmp = ">="; break;
@@ -91,6 +92,19 @@ c2p_depmod(alpm_depmod_t mod)
 	}
 
 	return newSVpv(cmp, 0);
+}
+
+alpm_depmod_t
+p2c_depmod(SV* mod)
+{
+	char *cmp = SvPV_nolen(mod);
+	if(!cmp || strcmp(cmp, "") == 0) { return ALPM_DEP_MOD_ANY; }
+	else if(strcmp(cmp, "=") == 0) { return ALPM_DEP_MOD_EQ; }
+	else if(strcmp(cmp, ">=") == 0) { return ALPM_DEP_MOD_GE; }
+	else if(strcmp(cmp, "<=") == 0) { return ALPM_DEP_MOD_LE; }
+	else if(strcmp(cmp, ">") == 0) { return ALPM_DEP_MOD_GT; }
+	else if(strcmp(cmp, "<") == 0) { return ALPM_DEP_MOD_LT; }
+	else { return 0; /* TODO: croak */ }
 }
 
 SV*
@@ -106,6 +120,29 @@ c2p_depend(void *p)
 	hv_store(hv, "mod", 3, c2p_depmod(dep->mod), 0);
 	if(dep->desc) hv_store(hv, "desc", 4, newSVpv(dep->desc, 0), 0);
 	return newRV_noinc((SV*)hv);
+}
+
+alpm_depend_t*
+p2c_depend(SV *rv)
+{
+	 if(SvROK(rv)) {
+		 alpm_depend_t *dep = calloc(sizeof(alpm_depend_t), 1);
+		 HV *hv = (HV*) SvRV(rv);
+		 SV **v;
+
+		 v = hv_fetch(hv, "name", 4, 0);
+		 dep->name = v ? strdup(SvPV_nolen(*v)) : NULL;
+		 v = hv_fetch(hv, "version", 7, 0);
+		 dep->version = v ? strdup(SvPV_nolen(*v)) : NULL;
+		 v = hv_fetch(hv, "desc", 4, 0);
+		 dep->desc = v ? strdup(SvPV_nolen(*v)) : NULL;
+		 v = hv_fetch(hv, "mod", 3, 0);
+		 dep->mod = v ? p2c_depmod(*v) : 0;
+
+		 return dep;
+	 } else {
+		 return alpm_dep_from_string(SvPV_nolen(rv));
+	 }
 }
 
 SV*

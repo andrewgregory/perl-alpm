@@ -247,6 +247,37 @@ alpm_option_set_deltaratio(self, ratio)
 	ALPM_Handle self
 	double ratio
 
+SetOption
+alpm_option_add_assumeinstalled(self, dep)
+	 ALPM_Handle self
+	 ALPM_Depend dep
+
+SetOption
+alpm_option_remove_assumeinstalled(self, dep)
+	 ALPM_Handle self
+	 ALPM_Depend dep
+
+void
+alpm_option_get_assumeinstalled(self)
+	 ALPM_Handle self
+ PREINIT:
+	 alpm_list_t *l;
+ PPCODE:
+	 l = alpm_option_get_assumeinstalled(self);
+	 LIST2STACK(l, c2p_depend);
+
+SetOption
+alpm_option_set_assumeinstalled(self, ...)
+	ALPM_Handle self
+ PREINIT:
+	alpm_list_t *lst = NULL;
+	int i = 1;
+ CODE:
+	STACK2LIST(i, lst, p2c_depend);
+	RETVAL = alpm_option_set_assumeinstalled(self, lst);
+ OUTPUT:
+	RETVAL
+
 MODULE = ALPM	PACKAGE = ALPM	PREFIX = alpm_option_
 
 # Why have get_localdb when there is no set_localdb? s/get_//;

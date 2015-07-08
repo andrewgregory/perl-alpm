@@ -367,6 +367,10 @@ Similarly the same options return a list.
 
 =item B<noextracts>* - a list of package names to not extract
 
+=item B<assumeinstalled>* - a list of dependencies to assume are satisfied.
+The setter methods take either a dependency hash or a string representing
+a dependency.  The accessor returns a list of dependency hash references.
+
 =item B<ignorepkgs>* - a list of package names to ignore for upgrade
 
 =item B<ignoregroups>* - a list of groups to ignore for upgrade
