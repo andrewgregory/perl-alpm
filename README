@@ -1,4 +1,4 @@
-ALPM 3.05
+ALPM 3.06
 
 INTRODUCTION
 
@@ -45,6 +45,7 @@ published on cpan.org or metacpan.org.
 COPYRIGHT AND LICENCE
 
 Copyright (C) 2015 by Justin Davis
+Copyright (C) 2015 by Andrew Gregory <apg@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,

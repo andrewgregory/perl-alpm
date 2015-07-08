@@ -4,7 +4,7 @@ ALPM - readonly access to pacman's libalpm.
 
 =head1 VERSION
 
-3.04
+3.06
 
 This version of ALPM is compatible with pacman 4.
 
@@ -548,7 +548,7 @@ an error condition occurs.
 
 =item * L<http://wiki.archlinux.org/index.php/Pacman>
 
-=item * L<http://github.com/juster/perl-alpm> - git repo for this module.
+=item * L<http://github.com/andrewgregory/perl-alpm> - git repo for this module.
 
 =back
 
@@ -556,9 +556,13 @@ an error condition occurs.
 
 Justin Davis, C<< <juster at cpan dot org> >>
 
+Andrew Gregory <apg@cpan.org>
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2015 by Justin Davis
+
+Copyright (C) 2015 by Andrew Gregory <apg@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,

@@ -15,13 +15,16 @@ ALPM.xs: xs/DB.xs xs/Package.xs xs/Options.xs
 END_MAKE
 }
 
-my %meta = ('resources' => { 'repository' => 'http://github.com/juster/perl-alpm' });
+my %meta = ('resources' => { 'repository' => 'http://github.com/andrewgregory/perl-alpm' });
 WriteMakefile(
 	'NAME' => 'ALPM',
 	'VERSION_FROM' => 'lib/ALPM.pm',
 	'LICENSE' => 'perl',
 	'ABSTRACT_FROM' => 'lib/ALPM.pod',
-	'AUTHOR' => 'Justin Davis <juster at cpan dot org>',
+	'AUTHOR' => [
+		'Andrew Gregory <apg@cpan.org>',
+		'Justin Davis <juster at cpan dot org>'
+	],
 	'LIBS' => [ '-lalpm' ],
 	'META_MERGE' => \%meta,
 	'clean' => { 'FILES' => 't/root t/repos/share const-*.inc' },

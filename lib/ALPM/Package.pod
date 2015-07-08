@@ -137,9 +137,13 @@ L<ALPM>, L<ALPM::DB>
 
 Justin Davis, C<< <juster at cpan dot org> >>
 
+Andrew Gregory <apg@cpan.org>
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2015 by Justin Davis
+
+Copyright (C) 2015 by Andrew Gregory <apg@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,

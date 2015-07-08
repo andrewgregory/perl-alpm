@@ -7,6 +7,9 @@
 : /_/   \_\_____|_|   |_|  |_|  \____|_| |_|\__,_|_| |_|\__, |\___||___/
 :                                                       |___/           
 
+* Release 3.06
+- Add assumeinstalled option accessors/setters
+
 * Release 3.05
 - Add missing get_root and get_dbpath methods to ALPM.
 - Assign proper DB class to DB object returned by a package's DB accessor.
