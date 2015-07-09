@@ -8,6 +8,7 @@
 :                                                       |___/           
 
 * Release 3.07
+- Add alpm_option_match_noextract
 - Add alpm_option_match_noupgrade
 
 * Release 3.06

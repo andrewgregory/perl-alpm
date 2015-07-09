@@ -145,6 +145,11 @@ alpm_option_match_noupgrade(self, path)
 	ALPM_Handle self
 	const char *path
 
+int
+alpm_option_match_noextract(self, path)
+	ALPM_Handle self
+	const char *path
+
 SetOption
 alpm_option_set_cachedirs(self, ...)
 	ALPM_Handle self
