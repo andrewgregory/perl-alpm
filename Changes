@@ -10,6 +10,7 @@
 * Release 3.07
 - Add alpm_option_match_noextract
 - Add alpm_option_match_noupgrade
+- Add alpm_pkg_should_ignore
 
 * Release 3.06
 - Add assumeinstalled option accessors/setters

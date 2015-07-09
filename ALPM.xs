@@ -216,6 +216,15 @@ vercmp(unused, a, b)
  OUTPUT:
 	RETVAL
 
+int
+should_ignore_pkg(handle, pkg)
+	ALPM_Handle handle
+	ALPM_Package pkg
+ CODE:
+	RETVAL = alpm_pkg_should_ignore(handle, pkg);
+ OUTPUT:
+	RETVAL
+
 INCLUDE: xs/Options.xs
 
 INCLUDE: xs/Package.xs
