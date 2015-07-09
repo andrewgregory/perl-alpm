@@ -363,7 +363,8 @@ Similarly the same options return a list.
 
 =item B<cachedirs>* - paths containing package caches
 
-=item B<noupgrades>* - a list of package names to not upgrade
+=item B<noupgrades>* - a list of package names to not upgrade.  Use
+C<match_noupgrade> to check if a path matches.
 
 =item B<noextracts>* - a list of package names to not extract
 
