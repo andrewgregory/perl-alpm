@@ -81,14 +81,13 @@ c2p_depmod(alpm_depmod_t mod)
 {
 	char *cmp;
 	switch(mod){
-	case 0:
-	case ALPM_DEP_MOD_ANY: cmp = ""; break; /* ? */
-	case ALPM_DEP_MOD_EQ: cmp = "="; break;
-	case ALPM_DEP_MOD_GE: cmp = ">="; break;
-	case ALPM_DEP_MOD_LE: cmp = "<="; break;
-	case ALPM_DEP_MOD_GT: cmp = ">"; break;
-	case ALPM_DEP_MOD_LT: cmp = "<"; break;
-	default: cmp = "?";
+		case ALPM_DEP_MOD_ANY: cmp = ""; break;
+		case ALPM_DEP_MOD_EQ: cmp = "="; break;
+		case ALPM_DEP_MOD_GE: cmp = ">="; break;
+		case ALPM_DEP_MOD_LE: cmp = "<="; break;
+		case ALPM_DEP_MOD_GT: cmp = ">"; break;
+		case ALPM_DEP_MOD_LT: cmp = "<"; break;
+		default: croak("c2p_depmod: unknown dependency mod '%d'", mod);
 	}
 
 	return newSVpv(cmp, 0);
@@ -104,7 +103,7 @@ p2c_depmod(SV* mod)
 	else if(strcmp(cmp, "<=") == 0) { return ALPM_DEP_MOD_LE; }
 	else if(strcmp(cmp, ">") == 0) { return ALPM_DEP_MOD_GT; }
 	else if(strcmp(cmp, "<") == 0) { return ALPM_DEP_MOD_LT; }
-	else { return 0; /* TODO: croak */ }
+	else { croak("p2c_depmod: unknown dependency mod '%s'", cmp); }
 }
 
 SV*
@@ -116,8 +115,10 @@ c2p_depend(void *p)
 	dep = p;
 
 	hv_store(hv, "name", 4, newSVpv(dep->name, 0), 0);
-	hv_store(hv, "version", 7, newSVpv(dep->version, 0), 0);
-	hv_store(hv, "mod", 3, c2p_depmod(dep->mod), 0);
+	if(dep->version) {
+		hv_store(hv, "version", 7, newSVpv(dep->version, 0), 0);
+		hv_store(hv, "mod", 3, c2p_depmod(dep->mod), 0);
+	}
 	if(dep->desc) hv_store(hv, "desc", 4, newSVpv(dep->desc, 0), 0);
 	return newRV_noinc((SV*)hv);
 }
@@ -130,14 +131,23 @@ p2c_depend(SV *rv)
 		 HV *hv = (HV*) SvRV(rv);
 		 SV **v;
 
-		 v = hv_fetch(hv, "name", 4, 0);
-		 dep->name = v ? strdup(SvPV_nolen(*v)) : NULL;
-		 v = hv_fetch(hv, "version", 7, 0);
-		 dep->version = v ? strdup(SvPV_nolen(*v)) : NULL;
+		 if((v = hv_fetch(hv, "name", 4, 0)) && SvOK(*v)) {
+			 dep->name = strdup(SvPV_nolen(*v));
+		 } else {
+			 croak("p2c_depend: missing dependency name");
+		 }
+
+		 if((v = hv_fetch(hv, "version", 7, 0)) && SvOK(*v)) {
+			 dep->version = strdup(SvPV_nolen(*v));
+			 v = hv_fetch(hv, "mod", 3, 0);
+			 dep->mod = v ? p2c_depmod(*v) : ALPM_DEP_MOD_EQ;
+		 } else {
+			 dep->version = NULL;
+			 dep->mod = ALPM_DEP_MOD_ANY;
+		 }
+
 		 v = hv_fetch(hv, "desc", 4, 0);
 		 dep->desc = v ? strdup(SvPV_nolen(*v)) : NULL;
-		 v = hv_fetch(hv, "mod", 3, 0);
-		 dep->mod = v ? p2c_depmod(*v) : 0;
 
 		 return dep;
 	 } else {
