@@ -266,6 +266,11 @@ SetOption
 alpm_option_remove_assumeinstalled(self, dep)
 	 ALPM_Handle self
 	 ALPM_Depend dep
+ CODE:
+	RETVAL = alpm_option_remove_assumeinstalled(self, dep);
+	alpm_dep_free(dep);
+ OUTPUT:
+	RETVAL
 
 void
 alpm_option_get_assumeinstalled(self)
